@@ -1,7 +1,12 @@
 HELP.md
 target/
 uploads/
-src/main/resources/application.properties
+
+# Application properties files
+application.properties
+application-*.properties
+*.properties
+
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
