@@ -1,6 +1,7 @@
 package com.healthcare.medVault.controller;
 
 import com.healthcare.medVault.dto.AppointmentRequestDTO;
+import com.healthcare.medVault.dto.AppointmentRescheduleDTO;
 import com.healthcare.medVault.dto.AppointmentResponseDTO;
 import com.healthcare.medVault.dto.AppointmentStatusUpdateDTO;
 import com.healthcare.medVault.service.AppointmentService;
@@ -54,6 +55,14 @@ public class AppointmentController {
             @PathVariable Long id,
             @Valid @RequestBody AppointmentStatusUpdateDTO statusUpdateDTO) {
         AppointmentResponseDTO response = appointmentService.updateAppointmentStatus(id, statusUpdateDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}/reschedule")
+    public ResponseEntity<AppointmentResponseDTO> rescheduleAppointment(
+            @PathVariable Long id,
+            @Valid @RequestBody AppointmentRescheduleDTO rescheduleDTO) {
+        AppointmentResponseDTO response = appointmentService.rescheduleAppointment(id, rescheduleDTO);
         return ResponseEntity.ok(response);
     }
 

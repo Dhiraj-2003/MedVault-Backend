@@ -1,6 +1,7 @@
 package com.healthcare.medVault.service;
 
 import com.healthcare.medVault.dto.AppointmentRequestDTO;
+import com.healthcare.medVault.dto.AppointmentRescheduleDTO;
 import com.healthcare.medVault.dto.AppointmentResponseDTO;
 import com.healthcare.medVault.dto.AppointmentStatusUpdateDTO;
 import com.healthcare.medVault.entity.Appointment;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,58 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
     private final SlotRepository slotRepository;
+
+    @Override
+    @Transactional
+    public AppointmentResponseDTO rescheduleAppointment(Long id, AppointmentRescheduleDTO rescheduleDTO) {
+        // Find the existing appointment
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id: " + id));
+
+        // Validate that the appointment can be rescheduled
+        if (appointment.getStatus() != AppointmentStatus.PENDING && appointment.getStatus() != AppointmentStatus.APPROVED) {
+            throw new IllegalStateException("Only PENDING or APPROVED appointments can be rescheduled");
+        }
+
+        // Check if the appointment has already been rescheduled (based on your business rules)
+        // You might want to add a rescheduleCount field to the Appointment entity to track this
+
+        // Validate the new time slot
+        Slot newSlot = slotRepository.findById(rescheduleDTO.getNewTimeSlotId())
+                .orElseThrow(() -> new ResourceNotFoundException("Slot not found with id: " + rescheduleDTO.getNewTimeSlotId()));
+
+        // Check if the new slot is available
+        if (!newSlot.getIsAvailable()) {
+            throw new IllegalStateException("The selected time slot is not available");
+        }
+
+        // Check if the new slot belongs to the same doctor
+        if (!newSlot.getDoctor().getId().equals(appointment.getDoctor().getId())) {
+            throw new IllegalStateException("The selected time slot does not belong to the same doctor");
+        }
+
+        // Free up the old slot
+        Slot oldSlot = appointment.getSlot();
+        oldSlot.setIsAvailable(true);
+        slotRepository.save(oldSlot);
+
+        // Reserve the new slot
+        newSlot.setIsAvailable(false);
+        slotRepository.save(newSlot);
+
+        // Update the appointment with the new slot
+        appointment.setSlot(newSlot);
+        appointment.setUpdatedAt(LocalDateTime.now());
+
+        // If the appointment was approved, you might want to change its status back to PENDING
+        // depending on your business rules
+        if (appointment.getStatus() == AppointmentStatus.APPROVED) {
+            appointment.setStatus(AppointmentStatus.PENDING);
+        }
+
+        Appointment updatedAppointment = appointmentRepository.save(appointment);
+        return convertToDTO(updatedAppointment);
+    }
 
     @Override
     @Transactional

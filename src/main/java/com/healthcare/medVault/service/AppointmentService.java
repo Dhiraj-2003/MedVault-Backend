@@ -1,6 +1,7 @@
 package com.healthcare.medVault.service;
 
 import com.healthcare.medVault.dto.AppointmentRequestDTO;
+import com.healthcare.medVault.dto.AppointmentRescheduleDTO;
 import com.healthcare.medVault.dto.AppointmentResponseDTO;
 import com.healthcare.medVault.dto.AppointmentStatusUpdateDTO;
 
@@ -12,6 +13,7 @@ public interface AppointmentService {
     List<AppointmentResponseDTO> getAppointmentsByPatientId(Long patientId);
     List<AppointmentResponseDTO> getAppointmentsByDoctorId(Long doctorId);
     AppointmentResponseDTO updateAppointmentStatus(Long id, AppointmentStatusUpdateDTO statusUpdateDTO);
+    AppointmentResponseDTO rescheduleAppointment(Long id, AppointmentRescheduleDTO rescheduleDTO);
     List<AppointmentResponseDTO> getAllAppointments();
     void deleteAppointment(Long id);
 }
