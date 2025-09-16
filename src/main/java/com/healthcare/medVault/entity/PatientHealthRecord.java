@@ -1,8 +1,11 @@
+// PatientHealthRecord.java (Updated)
 package com.healthcare.medVault.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "patient_health_records")
@@ -16,34 +19,47 @@ public class PatientHealthRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
+    @Column(name = "patient_id", nullable = false)
+    private String patientId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctor;
+    @Column(name = "basic_demographics", columnDefinition = "TEXT")
+    private String basicDemographics;
 
-    @Column(name = "record_date", nullable = false)
-    private LocalDateTime recordDate;
+    @Column(name = "identification_details", columnDefinition = "TEXT")
+    private String identificationDetails;
 
-    @Column(columnDefinition = "TEXT")
-    private String diagnosis;
+    @Column(name = "medical_history", columnDefinition = "TEXT")
+    private String medicalHistory;
 
-    @Column(columnDefinition = "TEXT")
-    private String symptoms;
+    @Column(name = "lifestyle_info", columnDefinition = "TEXT")
+    private String lifestyleInfo;
 
-    @Column(columnDefinition = "TEXT")
-    private String vitals;
+    @Column(name = "current_health", columnDefinition = "TEXT")
+    private String currentHealth;
 
-    @Column(columnDefinition = "TEXT")
-    private String prescriptions;
+    @Column(name = "consent_preferences", columnDefinition = "TEXT")
+    private String consentPreferences;
 
-    @Column(name = "lab_results", columnDefinition = "TEXT")
-    private String labResults;
+    @Column(name = "documents", columnDefinition = "TEXT") // ADD THIS FIELD
+    private String documents;
 
-    @Column(columnDefinition = "TEXT")
-    private String comments;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    private byte[] attachments;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "last_accessed_at")
+    private LocalDateTime lastAccessedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

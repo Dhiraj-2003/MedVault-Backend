@@ -36,7 +36,6 @@ public class Appointment {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    // Keep or add timestamps for tracking
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

@@ -1,5 +1,6 @@
 package com.healthcare.medVault.service;
 
+import com.healthcare.medVault.constant.MedVaultConstants;
 import com.healthcare.medVault.dto.DoctorProfileRequest;
 import com.healthcare.medVault.dto.DoctorProfileResponse;
 import com.healthcare.medVault.dto.PatientProfileDTO;
@@ -114,7 +115,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public Doctor getDoctorProfileByUserId(String userId) {
         User user = userRepository.findByUsername(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException(MedVaultConstants.USER_NOT_FOUND));
 
         return doctorRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Doctor profile not found"));

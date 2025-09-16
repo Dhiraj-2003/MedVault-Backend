@@ -1,5 +1,6 @@
 package com.healthcare.medVault.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -34,6 +36,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/slots/**").permitAll()
                         .requestMatchers("/api/profiles/**").permitAll()
                         .requestMatchers("/api/reviews/**").permitAll()
+                        .requestMatchers("/api/health-records/**").permitAll()
+                        .requestMatchers("/api/health-documents/**").permitAll()
                         .requestMatchers("/api/doctors/**").permitAll()
                         .requestMatchers("/api/analytics/**").permitAll()
                         .requestMatchers("/api/appointments/**").permitAll()
@@ -76,5 +80,17 @@ public class SecurityConfig {
                         .allowCredentials(true);
             }
         };
+    }
+
+//    @Bean
+//    public MultipartResolver multipartResolver() {
+//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+//        multipartResolver.setMaxUploadSize(10485760); // 10MB
+//        return multipartResolver;
+//    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }
