@@ -132,7 +132,7 @@ public class PatientHealthRecordService {
         return entity;
     }
 
-    private PatientHealthRecordDTO convertToDTO(PatientHealthRecord entity) {
+    PatientHealthRecordDTO convertToDTO(PatientHealthRecord entity) {
         PatientHealthRecordDTO dto = new PatientHealthRecordDTO();
         dto.setId(entity.getId().toString());
         dto.setPatientId(entity.getPatientId());

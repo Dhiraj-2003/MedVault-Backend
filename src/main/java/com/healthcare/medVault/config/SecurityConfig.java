@@ -39,6 +39,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/emergency/**").permitAll()
                         .requestMatchers("/api/health-records/**").permitAll()
                         .requestMatchers("/api/health-documents/**").permitAll()
+                        .requestMatchers("/api/document-permissions/**").permitAll()
+                        .requestMatchers("/api/medical-records/**").permitAll()
                         .requestMatchers("/api/doctors/**").permitAll()
                         .requestMatchers("/api/analytics/**").permitAll()
                         .requestMatchers("/api/appointments/**").permitAll()
