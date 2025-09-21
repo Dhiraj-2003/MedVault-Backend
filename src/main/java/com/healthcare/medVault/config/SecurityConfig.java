@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/slots/**").permitAll()
                         .requestMatchers("/api/profiles/**").permitAll()
                         .requestMatchers("/api/reviews/**").permitAll()
+                        .requestMatchers("/api/emergency/**").permitAll()
                         .requestMatchers("/api/health-records/**").permitAll()
                         .requestMatchers("/api/health-documents/**").permitAll()
                         .requestMatchers("/api/doctors/**").permitAll()

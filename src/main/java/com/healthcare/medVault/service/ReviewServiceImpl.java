@@ -67,8 +67,9 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public DoctorRatingResponse getDoctorRating(Long doctorId) {
         DoctorRatingResponse response = new DoctorRatingResponse();
+        Double avgRating=reviewRepository.findAverageRatingByDoctorId(doctorId);
         response.setDoctorId(doctorId);
-        response.setAverageRating(reviewRepository.findAverageRatingByDoctorId(doctorId));
+        response.setAverageRating(avgRating!=null?avgRating:0.0);
         response.setTotalReviews(reviewRepository.countByDoctorId(doctorId));
         return response;
     }

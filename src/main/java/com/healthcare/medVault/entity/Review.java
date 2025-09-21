@@ -26,7 +26,7 @@ public class Review {
     private Patient patient;
 
     @Column(nullable = false)
-    private Integer rating; // 1-5 stars
+    private Integer rating=0; // 1-5 stars
 
     @Column(columnDefinition = "TEXT")
     private String comment;
